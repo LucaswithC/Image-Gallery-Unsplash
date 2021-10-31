@@ -1,38 +1,207 @@
-.App {
+* {
+  margin: 0px;
+  padding: 0;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+h3 {
+  color: #333333;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+#container {
+  max-width: 1200px;
+  padding: 40px;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: content;
+}
+
+header * {
+  white-space: nowrap;
+}
+
+#header-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#header-left p {
+  font-size: 0.7rem;
+  margin-left: 1rem;
+  margin-right: 3rem;
+}
+
+#header-left p strong {
+  font-size: 1rem;
+}
+
+form {
+  width: 100%;
+}
+
+label {
+  font-size: 0.8rem;
+  color: #333333;
+}
+
+input {
+  border: 2px solid #BDBDBD70;
+  border-radius: 8px;
+  padding: 15px 20px;
+  display: block;
+  width: calc(100% - 42px);
+  margin-bottom: 15px;
+  margin-top: 5px
+}
+
+.icon-input {
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+}
+
+.icon-input i {
+  position: absolute;
+  left: 22px;
+  top: 18px;
+  color: #929292;
+}
+
+.icon-input input {
+  padding-left: 50px !important;
+  margin: 0;
+  width: 100%;
+}
+
+button {
+  padding: 15px 20px;
+  font-family: Noto Sans;
+  font-style: normal;
+  font-weight: bold;
+  background: #3DB46D;
+  box-shadow: 0px 1px 6px #3DB46D60;
+  border-radius: 8px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  background: none;
+  box-shadow: none;
+  color: #33333360;
+}
+
+.danger-btn {
+  background: #EB5757;
+  box-shadow: 0px 1px 6px #EB575760;
+}
+
+#content {
+  padding-top: 40px;
+}
+
+.my-masonry-grid {
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
+  display: flex;
+  margin-left: -30px; /* gutter size offset */
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 30px; /* gutter size */
+  background-clip: padding-box;
+}
+
+/* Style your items */
+.my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
+  margin-bottom: 30px;
+}
+
+.image {
+  position: relative;
+}
+
+.image:hover .image-overlay {
+  opacity: 1;
+}
+
+.image img {
+  border-radius: 12px;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 40px);
+  height: calc(100% - 45px);
+  background: rgba(0,0,0,60%);
+  border-radius: 12px;
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.smallBtn {
+  font-size: 0.7rem;
+  padding: 5px 8px;
+  color: #EB5757;
+  border: 1px solid #EB5757;
+  border-radius: 50px;
+  align-self: flex-end;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s
+}
+
+.smallBtn:hover {
+  background: #EB5757;
+  color: #fff;
+}
+
+#modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 20;
+  background:rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+#modal {
+  background: #fff;
+  padding: 30px;
+  margin: 20px;
+  border-radius: 12px;
+  width: calc(100% - 60px);
+  max-width: 500px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#no-images {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#no-images img {
+  max-width: 400px;
 }
