@@ -2,7 +2,7 @@ import React from "react";
 import Masonry from "react-masonry-css";
 import "./App.css";
 import UnsplashLogo from "./images/Unsplash_Symbol.png"
-require('dotenv').config({ path: './../.env' })
+require('dotenv').config()
 
 
 class Unsplash extends React.Component {
@@ -45,6 +45,7 @@ class Unsplash extends React.Component {
       },
       search: "",
       delete: 0,
+      error: ''
     };
 
     this.openModal = this.openModal.bind(this);
@@ -82,16 +83,21 @@ class Unsplash extends React.Component {
 
   deleteImg(e) {
     e.preventDefault();
-    console.log(process.env)
-    if(e.target[0].value === process.env.REACT_APP_DELETE_PASSWORD) {
+    if(e.target[0].value === REACT_APP_DELETE_PASSWORD) {
     let imageNr = +e.target[1].value + 1;
     let firstPart = this.state.images.slice(0, imageNr - 1);
     let lastPart = this.state.images.slice(imageNr, this.state.images.length);
     this.setState(() => ({
       images: [...firstPart, ...lastPart],
+      modal: {
+        active: false, 
+        state: ''
+      }
     }));
   } else {
-    console.log('Password wrong')
+    this.setState(() => ({
+      error: 'Wrong Password'
+    }))
   }
   }
 
@@ -113,6 +119,7 @@ class Unsplash extends React.Component {
   closeModal(e) {
     this.setState(() => ({
       modal: { active: false, state: '' },
+      error: ''
     }));
   }
 
@@ -199,6 +206,9 @@ class Unsplash extends React.Component {
                     placeholder="**********"
                     required
                   ></input>
+                  {this.state.error !== '' && (
+                    <p style={{color: '#EB5757', fontSize: '0.7rem'}}>{this.state.error}</p>
+                  )}
                   <input type="hidden" value={this.state.delete} />
                   <div className="modal-buttons">
                     <button
