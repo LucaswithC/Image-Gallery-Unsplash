@@ -2,7 +2,6 @@ import React from "react";
 import Masonry from "react-masonry-css";
 import "./App.css";
 import UnsplashLogo from "./images/Unsplash_Symbol.png"
-require('dotenv').config()
 
 
 class Unsplash extends React.Component {
@@ -83,7 +82,7 @@ class Unsplash extends React.Component {
 
   deleteImg(e) {
     e.preventDefault();
-    if(e.target[0].value === REACT_APP_DELETE_PASSWORD) {
+    if(e.target[0].value === process.envREACT_APP_DELETE_PASSWORD) {
     let imageNr = +e.target[1].value + 1;
     let firstPart = this.state.images.slice(0, imageNr - 1);
     let lastPart = this.state.images.slice(imageNr, this.state.images.length);
