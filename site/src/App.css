@@ -42,6 +42,21 @@ header * {
   font-size: 1rem;
 }
 
+#header-right {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 500px) {
+  header {
+    flex-direction: column;
+  }
+  #header-right {
+    margin-top: 10px;
+  }
+}
+
 form {
   width: 100%;
 }
@@ -63,8 +78,9 @@ input {
 
 .icon-input {
   position: relative;
-  max-width: 600px;
+  max-width: 300px;
   width: 100%;
+  margin-right: 5px;
 }
 
 .icon-input i {
@@ -115,6 +131,7 @@ button {
   margin-left: -30px; /* gutter size offset */
   width: auto;
 }
+
 .my-masonry-grid_column {
   padding-left: 30px; /* gutter size */
   background-clip: padding-box;
@@ -204,4 +221,12 @@ button {
 
 #no-images img {
   max-width: 400px;
+}
+
+footer {
+  font-size: 0.8rem;
+}
+
+a {
+  color: #041200;
 }

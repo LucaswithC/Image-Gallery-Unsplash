@@ -33,7 +33,7 @@ class Unsplash extends React.Component {
   }
 
   getPhotos() {
-    fetch("http://localhost:8080/image-list")
+    fetch("https://gallery-lucas.herokuapp.com/image-list")
     .then(res => res.json())
     .then(data => {
       this.setState(() => ({
@@ -49,7 +49,7 @@ class Unsplash extends React.Component {
       url: e.target[1].value
     }
     let jsonData = JSON.stringify(data)
-    fetch("http://localhost:8080/image-list-add", {
+    fetch("https://gallery-lucas.herokuapp.com/image-list-add", {
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -81,7 +81,7 @@ class Unsplash extends React.Component {
 
   deleteImg(e) {
     e.preventDefault();
-    fetch("http://localhost:8080/image-list-delete", {
+    fetch("https://gallery-lucas.herokuapp.com/image-list-delete", {
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -244,7 +244,9 @@ class Unsplash extends React.Component {
               <br />
               devchallenges.io
             </p>
-            <div className="icon-input">
+          </div>
+          <div id="header-right">
+          <div className="icon-input">
               <input
                 type="search"
                 id="image-search"
@@ -254,8 +256,6 @@ class Unsplash extends React.Component {
               ></input>
               <i className="fas fa-search"></i>
             </div>
-          </div>
-          <div id="header-right">
             <button id="add_photo" modalbtn="add" onClick={this.openModal}>
               Add a photo
             </button>
@@ -276,6 +276,10 @@ class Unsplash extends React.Component {
             </Masonry>
           )}
         </div>
+        <footer>
+          <p>Created by <a href="https://www.github.com/LucaswithC" target="_blank" rel="noreferrer">Lucas</a></p>
+          <p>Photos from <a href="https://unsplash.com/" target="_blank" rel="noreferrer">Unsplash</a>. Copyright belongs to the Artists.</p>
+        </footer>
       </div>
     );
   }
