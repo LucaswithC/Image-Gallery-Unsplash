@@ -2,42 +2,13 @@ import React from "react";
 import Masonry from "react-masonry-css";
 import "./App.css";
 import UnsplashLogo from "./images/Unsplash_Symbol.png"
-
+require('dotenv').config()
 
 class Unsplash extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: [
-        {
-          label: "House in Valley",
-          url: "https://images.unsplash.com/photo-1635598785659-60ddfb58696b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80",
-        },
-        {
-          label: "Shoulder",
-          url: "https://images.unsplash.com/photo-1635359332867-d07e06a5b1bd?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=888&q=80",
-        },
-        {
-          label: "Woodland",
-          url: "https://images.unsplash.com/photo-1635614989896-afa3547d8c27?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80",
-        },
-        {
-          label: "Electricity",
-          url: "https://images.unsplash.com/photo-1635616045836-f0b92316e44f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80",
-        },
-        {
-          label: "Desert Valley",
-          url: "https://images.unsplash.com/photo-1635608724155-640bd8ccd2f2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80",
-        },
-        {
-          label: "Deathly Romantic",
-          url: "https://images.unsplash.com/photo-1635586668235-6e1457115785?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=685&q=80",
-        },
-        {
-          label: "The Flow of Life",
-          url: "https://images.unsplash.com/photo-1635598786348-9f9cbcaa66dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80",
-        },
-      ],
+      images: [],
       modal: {
         active: false,
         state: "",
@@ -54,20 +25,48 @@ class Unsplash extends React.Component {
     this.deleteModal = this.deleteModal.bind(this);
     this.search = this.search.bind(this);
     this.deleteImg = this.deleteImg.bind(this);
+    this.getPhotos = this.getPhotos.bind(this);
+  }
+
+  componentDidMount() {
+    this.getPhotos()
+  }
+
+  getPhotos() {
+    fetch("http://localhost:8080/image-list")
+    .then(res => res.json())
+    .then(data => {
+      this.setState(() => ({
+        images: data
+      }))
+    })
   }
 
   async addPhoto(e) {
     e.preventDefault();
-    await this.setState(() => ({
-      images: [
-        { label: e.target[0].value, url: e.target[1].value },
-        ...this.state.images,
-      ],
-      modalActive: false,
-    }));
-    e.target[0].value = "";
-    e.target[1].value = "";
-    this.closeModal()
+    let data = {
+      label: e.target[0].value, 
+      url: e.target[1].value
+    }
+    let jsonData = JSON.stringify(data)
+    fetch("http://localhost:8080/image-list-add", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: jsonData
+    })
+    .then(res => res.json())
+    .then(data => {
+      e.target[0].value = "";
+      e.target[1].value = "";
+      this.closeModal()
+      this.getPhotos()
+    })
+    .catch(error => {
+      console.log(error)
+    })
   }
 
   deleteModal(e) {
@@ -82,22 +81,31 @@ class Unsplash extends React.Component {
 
   deleteImg(e) {
     e.preventDefault();
-    if(e.target[0].value === process.envREACT_APP_DELETE_PASSWORD) {
-    let imageNr = +e.target[1].value + 1;
-    let firstPart = this.state.images.slice(0, imageNr - 1);
-    let lastPart = this.state.images.slice(imageNr, this.state.images.length);
-    this.setState(() => ({
-      images: [...firstPart, ...lastPart],
-      modal: {
-        active: false, 
-        state: ''
+    fetch("http://localhost:8080/image-list-delete", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"index": e.target[1].value, "password": e.target[0].value})
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      if(data.Response === "Success") {
+        e.target[0].value = ''
+        e.target[1].value = ''
+        this.closeModal()
+        this.getPhotos()
+      } else {
+        this.setState(() => ({
+          error: data.Response
+        }))
       }
-    }));
-  } else {
-    this.setState(() => ({
-      error: 'Wrong Password'
-    }))
-  }
+    })
+    .catch(error => {
+      console.log(error)
+    })
   }
 
   search(e) {
@@ -127,11 +135,14 @@ class Unsplash extends React.Component {
   }
 
   render() {
-    let galleryImgs =
+    let galleryImgs = [];
+    let gallery = [];
+    if(this.state.images.length > 0) {
+    galleryImgs =
       this.state.search !== ""
         ? this.state.images.filter((img) => img.label.match(this.state.search))
         : this.state.images;
-    let gallery = galleryImgs.map((image) => {
+    gallery = galleryImgs.map((image) => {
       return (
         <div className="image">
           <img src={image.url} alt={image.label} width="100%" />
@@ -149,6 +160,7 @@ class Unsplash extends React.Component {
         </div>
       );
     });
+  }
 
     const breakpointColumnsObj = {
       default: 3,
