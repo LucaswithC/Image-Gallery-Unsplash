@@ -33,7 +33,7 @@ class Unsplash extends React.Component {
   }
 
   getPhotos() {
-    fetch("https://gallery-lucas.herokuapp.com/image-list")
+    fetch("https://image-gallery-api.onrender.com/image-list")
     .then(res => res.json())
     .then(data => {
       this.setState(() => ({
@@ -49,7 +49,7 @@ class Unsplash extends React.Component {
       url: e.target[1].value
     }
     let jsonData = JSON.stringify(data)
-    fetch("https://gallery-lucas.herokuapp.com/image-list-add", {
+    fetch("https://image-gallery-api.onrender.com/image-list-add", {
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -81,7 +81,7 @@ class Unsplash extends React.Component {
 
   deleteImg(e) {
     e.preventDefault();
-    fetch("https://gallery-lucas.herokuapp.com/image-list-delete", {
+    fetch("https://image-gallery-api.onrender.com/image-list-delete", {
       method: "POST",
       headers: {
         'Accept': 'application/json',
